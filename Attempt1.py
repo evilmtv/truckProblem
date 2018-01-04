@@ -92,7 +92,9 @@ def carryFromPrevious():
     global steps
     global fuelMap
     
-    while (fuelMap[currentPosition] < geometricSum()):
+    tempGeometricSum = geometricSum()
+    
+    while (fuelMap[currentPosition] < tempGeometricSum):
         # Fill up truck
         takeFuel(1)
         # Move truck backwards and drop fuel
