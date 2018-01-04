@@ -137,7 +137,7 @@ else:
 
 while (state != 'end'):
     
-    if (state == 'returning'):
+    while (state == 'returning'):
         # Fill up truck
         takeFuel(fuelMap[currentPosition])
         # Move truck
