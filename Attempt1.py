@@ -4,6 +4,7 @@ Created on Thu Jan  4 21:14:19 2018
 @author: Lim Jun Hao
 Python 3.6
 """
+print ('\n')
 
 def zerolistmaker(n):
     listofzeros = [0] * n
@@ -11,8 +12,7 @@ def zerolistmaker(n):
 
 #Print current time on computer
 from datetime import datetime
-print (str(datetime.now()))
-
+print (str(datetime.now()), '\n')
 #Implement simple timer
 import time
 tfulls = time.time() 
@@ -24,12 +24,79 @@ fuelTaken = 0
 fuelUsed = 0
 tryCount = 0 #Furthest checked location
 import random
-n = 3 #random.randint(1, 10)
-print (n)
+n = random.randint(1, 4)
+print ('Distance to destination =', n, '\n')
 steps = 0
 state = 'exploring'
-fuelMap = zerolistmaker(n + 1) #Taking fuelMap[0] as start point, fuelMap[1] as position 1 etc..
-#fuelMap.extend(zerolistmaker(5))
+fuelMap = zerolistmaker(2) #Taking fuelMap[0] as start point, fuelMap[1] as position 1 etc..
+
+#Main Code
+print ('BEGIN \n')
+      
+#Fill up truck
+takeFuel(2)
+#Move truck forward and drop fuel
+moveAndDrop('forward')
+
+tryCount += 1
+      
+if (currentPosition == n):
+    state = 'end'
+    
+else:
+    state = 'returning'
+    fuelMap.extend(zerolistmaker(1))
+    tryCount = 1
+
+while (state != 'end'):
+    
+    if (state == 'returning'):
+        #Fill up truck
+        takeFuel(fuelMap[currentPosition])
+        #Move truck
+        moveAndDrop('back')
+        
+        if (currentPosition == 0):
+            state = 'exploring'
+        
+    while (state == 'exploring'):
+        
+        if (currentPosition == 0):
+            #Fill up truck
+            takeFuel(3)
+            #Move truck forward and drop fuel
+            moveAndDrop('forward')
+            carryFromPrevious()
+
+        if (currentPosition == (tryCount + 1)):
+            tryCount += 1
+            
+            if (currentPosition == n):
+                state = 'end'
+                
+            else:
+                fuelMap.extend(zerolistmaker(1))
+                print ('\nDestination not reached, insufficient fuel to progress, returning to base\n')
+                state = 'returning'
+                
+        elif (currentPosition == tryCount):
+            #Fill up truck
+            takeFuel(2)
+            #Move truck forward and drop fuel
+            moveAndDrop('forward')
+
+print ('\nCurrent Position is at destination, Mission Complete!\n')
+print ('Results:')
+
+def geometricSum():
+    geoN = tryCount - currentPosition
+    if ((tryCount - currentPosition) == 0):
+        return 3
+    else:
+        ratio = 3
+        start = 4
+        progression = [start * ratio**i for i in range(geoN)]
+        return(3 + sum(progression))
 
 def takeFuel(qty):
     global fuelOnHand
@@ -45,7 +112,7 @@ def takeFuel(qty):
         fuelOnHand += qty
         fuelTaken += qty
     else:
-        print ('ERROR at takeFuel')
+        print ('\nERROR at takeFuel\n')
     print (fuelMap)
     print('Fuel:', fuelOnHand, '| Position:', currentPosition, '| Task: Refueling', '| Steps:', steps, '| State:', state)
           
@@ -72,8 +139,6 @@ def moveAndDrop(direction):
     print (fuelMap)
     print('Fuel:', fuelOnHand, '| Position:', currentPosition, '| Task: Moving', direction, '| Steps:', steps, '| State:', state)
 
-
-
 def carryFromPrevious():
     global currentPosition
     global fuelOnHand
@@ -82,7 +147,7 @@ def carryFromPrevious():
     global steps
     global fuelMap
     
-    while (fuelMap[currentPosition] < ((3**(tryCount - currentPosition + 1)) - 0)):
+    while (fuelMap[currentPosition] < geometricSum()):
         #Fill up truck
         takeFuel(1)
         #Move truck backwards and drop fuel
@@ -94,6 +159,7 @@ def carryFromPrevious():
     
     if (currentPosition == tryCount):
         return()
+        
     else:
         #Fill up truck
         takeFuel(3)
@@ -102,55 +168,3 @@ def carryFromPrevious():
         
         carryFromPrevious()
         return()
-
-
-#Main Code
-
-print (fuelMap)
-print('#', steps, 'Fuel:', fuelOnHand, 'Position:', currentPosition, 'Task:', state)
-      
-#Fill up truck
-takeFuel(2)
-#Move truck forward and drop fuel
-moveAndDrop('forward')
-
-tryCount += 1
-      
-if (currentPosition == n):
-    state = 'end'
-else:
-    state = 'returning'
-    tryCount = 1
-
-while (state != 'end'):
-    if (state == 'returning'):
-        #Fill up truck
-        takeFuel(fuelMap[currentPosition])
-        
-        #Move truck
-        moveAndDrop('back')
-        if (currentPosition == 0):
-            state = 'exploring'
-        
-    while (state == 'exploring'):
-        if (currentPosition == 0):
-            #Fill up truck
-            takeFuel(3)
-            #Move truck forward and drop fuel
-            moveAndDrop('forward')
-            carryFromPrevious()
-
-        if (currentPosition == (tryCount + 1)):
-            tryCount += 1
-            if (currentPosition == n):
-                state = 'end'
-            else:
-                state = 'returning'
-        elif (currentPosition == tryCount):
-            #Fill up truck
-            takeFuel(2)
-            
-            #Move truck forward and drop fuel
-            moveAndDrop('forward')
-
-print ('Mission Complete')
