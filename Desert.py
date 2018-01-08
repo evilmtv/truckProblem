@@ -152,6 +152,7 @@ while (state != 'end'):
 
         if (current_position == 0):
             state = 'exploring'
+            time.sleep(2)
 
     while (state == 'exploring'):
 
@@ -172,6 +173,7 @@ while (state != 'end'):
                 # Update map
                 fuel_map.extend(zero_list_maker(1))
                 print ('\nDestination not reached, insufficient fuel to progress, returning to base\n')
+                time.sleep(2)
                 state = 'returning'
 
         elif (current_position == try_count):
