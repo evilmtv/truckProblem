@@ -26,12 +26,16 @@ fuel_on_hand = 0
 fuel_taken = 0
 fuel_used = 0
 try_count = 0 # Furthest checked location
-n = random.randint(1, 10)
-print ('Distance to destination =', n, '\n')
 steps = 0
 state = 'exploring'
 fuel_map = zero_list_maker(2) # Taking fuel_map[0] as start point, fuel_map[1] as position 1 etc..
 
+# Request user for distance
+try:
+    n = int(input("Distance? ").strip())
+except ValueError:
+    n = random.randint(1, 10)
+print ('Distance to destination =', n, '\n')
 
 # To explore 3 units away from start point, the truck has to first bring 7 units of fuel to 1 unit away from start point
 # To explore 4 units away from start point, the truck has to first bring 19 units of fuel to 1 unit away from start point
