@@ -82,12 +82,16 @@ def move_and_drop(direction):
 
     fuel_on_hand -= 1
     fuel_used += 1
+    
     if (current_position == 0):
         fuel_taken -= fuel_on_hand
+        
     else:
         fuel_map[current_position] += fuel_on_hand
+        
     fuel_on_hand = 0
     steps += 1
+    
     print (fuel_map)
     print('Fuel:', fuel_on_hand, '| Position:', current_position, '| Task: Moving', direction, '| Steps:', steps, '| State:', state)
 
